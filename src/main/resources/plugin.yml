@@ -1,0 +1,5 @@
+name: Spleef
+author: Erpriex
+version: 1.0
+main: fr.lostaria.spleef.Spleef
+api-version: 1.19
