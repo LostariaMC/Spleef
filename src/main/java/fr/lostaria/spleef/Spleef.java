@@ -26,7 +26,7 @@ public final class Spleef extends JavaPlugin {
 
     private GameManager gameManager;
 
-    private String prefix = "§6AgeOfEmpire §7| §r";
+    private String prefix = "§3Spleef §7| §r";
 
     @Override
     public void onEnable() {
@@ -41,16 +41,21 @@ public final class Spleef extends JavaPlugin {
         mapsLocation.add(new MapLocation("name", MapLocationType.STRING));
         mapsLocation.add(new MapLocation("authors", MapLocationType.STRING));
         mapsLocation.add(new MapLocation("spawn", MapLocationType.LOCATION));
-        mapsLocation.add(new MapLocation("center", MapLocationType.LOCATION));
+        mapsLocation.add(new MapLocation("layer1", MapLocationType.CUBOID));
+        mapsLocation.add(new MapLocation("layer2", MapLocationType.CUBOID));
+        mapsLocation.add(new MapLocation("layer3", MapLocationType.CUBOID));
+        mapsLocation.add(new MapLocation("layer4", MapLocationType.CUBOID));
+        mapsLocation.add(new MapLocation("layer5", MapLocationType.CUBOID));
 
         List<MapTemplate> mapsTemplate = new ArrayList<>();
-        mapsTemplate.add(new MapTemplate(MapType.FOUR, mapsLocation));
+        mapsTemplate.add(new MapTemplate(MapType.NONE, mapsLocation));
 
-        game = new Game("spleef", "Spleef", ChatColor.GOLD, Material.SNOWBALL, Arrays.asList(Team.RED, Team.BLUE, Team.YELLOW, Team.GREEN), 2, false, true, statistics, achievements, Arrays.asList("Ouais, pour la description on","verra après"), mapsTemplate);
+        game = new Game("spleef", "Spleef", ChatColor.GOLD, Material.SNOWBALL, null, 1, false, true, statistics, achievements, Arrays.asList("Ouais, pour la description on","verra après"), mapsTemplate);
         game.setGameAuthor("Erpriex");
         game.setTags("Solo");
         game.setShowScoreTablist(true);
         game.setRestrictedGame();
+        game.setPreparationTime(10);
         api.registerNewGame(game);
 
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
