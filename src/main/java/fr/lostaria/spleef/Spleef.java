@@ -56,6 +56,7 @@ public final class Spleef extends JavaPlugin {
         game.setShowScoreTablist(true);
         game.setRestrictedGame();
         game.setPreparationTime(10);
+        game.setDefaultFriendlyFire(true);
         api.registerNewGame(game);
 
         getServer().getPluginManager().registerEvents(new GameListener(this), this);

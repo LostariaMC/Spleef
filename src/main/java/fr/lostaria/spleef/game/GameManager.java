@@ -59,6 +59,18 @@ public class GameManager {
 
     }
 
+    public void preparationOver() {
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
+                ItemStack shovel = new ItemStack(Material.DIAMOND_SHOVEL);
+                pls.getInventory().setItem(0, shovel);
+                pls.updateInventory();
+                pls.sendMessage(main.getPrefix() + "§fEt c'est parti, à vos pelles !");
+                pls.playSound(pls.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1f, 1f);
+            }
+        }
+    }
+
     public CosmoxScoreboard createScoreboard(Player player){
         CosmoxScoreboard scoreboard = new CosmoxScoreboard(player);
 
