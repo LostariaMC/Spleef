@@ -1,12 +1,13 @@
 package fr.lostaria.spleef;
 
 import fr.lostaria.spleef.game.GameManager;
+import fr.lostaria.spleef.game.SpleefPhase;
+import fr.lostaria.spleef.listeners.BlockBreakListener;
 import fr.lostaria.spleef.listeners.GameListener;
 import fr.worsewarn.cosmox.API;
 import fr.worsewarn.cosmox.api.achievements.Achievement;
 import fr.worsewarn.cosmox.api.statistics.Statistic;
 import fr.worsewarn.cosmox.game.Game;
-import fr.worsewarn.cosmox.game.teams.Team;
 import fr.worsewarn.cosmox.tools.map.MapLocation;
 import fr.worsewarn.cosmox.tools.map.MapLocationType;
 import fr.worsewarn.cosmox.tools.map.MapTemplate;
@@ -50,7 +51,7 @@ public final class Spleef extends JavaPlugin {
         List<MapTemplate> mapsTemplate = new ArrayList<>();
         mapsTemplate.add(new MapTemplate(MapType.NONE, mapsLocation));
 
-        game = new Game("spleef", "Spleef", ChatColor.GOLD, Material.SNOWBALL, null, 1, false, true, statistics, achievements, Arrays.asList("Ouais, pour la description on","verra après"), mapsTemplate);
+        game = new Game("spleef", "Spleef", ChatColor.DARK_AQUA, Material.SNOWBALL, null, 2, false, true, statistics, achievements, Arrays.asList(" ","§c/!\\ Jeu en développement /!\\"," ","§7Survis le plus longtemps possible","§7en faisant tomber tes adversaires !","§7Le dernier sur la plateforme","§7remporte la partie !"), mapsTemplate);
         game.setGameAuthor("Erpriex");
         game.setTags("Solo");
         game.setShowScoreTablist(true);
@@ -59,6 +60,9 @@ public final class Spleef extends JavaPlugin {
         game.setDefaultFriendlyFire(true);
         api.registerNewGame(game);
 
+        gameManager.setPhase(SpleefPhase.START);
+
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
 
 

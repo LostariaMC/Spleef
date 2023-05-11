@@ -15,14 +15,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Map;
-import java.util.UUID;
-
 public class GameManager {
 
     private Spleef main;
 
     private GameMap map;
+
+    private SpleefPhase phase;
 
 
     public GameManager(Spleef main){
@@ -60,6 +59,7 @@ public class GameManager {
     }
 
     public void preparationOver() {
+        setPhase(SpleefPhase.GAME);
         for(Player pls : Bukkit.getOnlinePlayers()){
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
                 ItemStack shovel = new ItemStack(Material.DIAMOND_SHOVEL);
@@ -81,6 +81,14 @@ public class GameManager {
 
     public GameMap getMap(){
         return map;
+    }
+
+    public SpleefPhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(SpleefPhase phase) {
+        this.phase = phase;
     }
 
 }
