@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.game;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
 import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
 import fr.worsewarn.cosmox.game.Phase;
 import fr.worsewarn.cosmox.game.events.GameStartEvent;
@@ -15,6 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GameManager {
 
     private Spleef main;
@@ -22,6 +26,8 @@ public class GameManager {
     private GameMap map;
 
     private SpleefPhase phase;
+
+    private Map<Player, Integer> snowballsInventory = new HashMap<>();
 
 
     public GameManager(Spleef main){
@@ -43,6 +49,7 @@ public class GameManager {
 
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
                 pls.setGameMode(GameMode.SURVIVAL);
+                snowballsInventory.put(pls, 0);
             }else{
                 pls.setGameMode(GameMode.SPECTATOR);
             }
@@ -62,13 +69,19 @@ public class GameManager {
         setPhase(SpleefPhase.GAME);
         for(Player pls : Bukkit.getOnlinePlayers()){
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
+
                 ItemStack shovel = new ItemStack(Material.DIAMOND_SHOVEL);
                 pls.getInventory().setItem(0, shovel);
-                pls.updateInventory();
+
+                updatePlayerSnowballsInventory(pls);
+
                 pls.sendMessage(main.getPrefix() + "§fEt c'est parti, à vos pelles !");
                 pls.playSound(pls.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1f, 1f);
             }
         }
+
+        IncrementPlayerSnowballTask incrementSnowballTask = new IncrementPlayerSnowballTask(main);
+        incrementSnowballTask.runTaskTimer(main, 20, 20);
     }
 
     public CosmoxScoreboard createScoreboard(Player player){
@@ -89,6 +102,21 @@ public class GameManager {
 
     public void setPhase(SpleefPhase phase) {
         this.phase = phase;
+    }
+
+    public Map<Player, Integer> getSnowballsInventory() {
+        return snowballsInventory;
+    }
+
+    public void updatePlayerSnowballsInventory(Player player){
+        if(!snowballsInventory.containsKey(player)) return;
+        int snowballs = snowballsInventory.get(player);
+        if(snowballs <= 0){
+            player.getInventory().setItemInOffHand(new ItemStack(Material.FIREWORK_STAR, 1));
+        }else{
+            player.getInventory().setItemInOffHand(new ItemStack(Material.SNOWBALL, snowballs));
+        }
+        player.updateInventory();
     }
 
 }

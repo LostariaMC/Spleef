@@ -2,6 +2,7 @@ package fr.lostaria.spleef.listeners;
 
 import fr.lostaria.spleef.Spleef;
 import fr.lostaria.spleef.game.SpleefPhase;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -16,9 +17,11 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        if(main.getGameManager().getPhase() != SpleefPhase.GAME) {
+
+        if(event.getBlock().getType() == Material.SNOW_BLOCK && main.getGameManager().getPhase() == SpleefPhase.GAME){
+            event.setDropItems(false);
+        }else{
             event.setCancelled(true);
-            return;
         }
     }
 
