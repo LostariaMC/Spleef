@@ -2,9 +2,7 @@ package fr.lostaria.spleef;
 
 import fr.lostaria.spleef.game.GameManager;
 import fr.lostaria.spleef.game.SpleefPhase;
-import fr.lostaria.spleef.listeners.BlockBreakListener;
-import fr.lostaria.spleef.listeners.GameListener;
-import fr.lostaria.spleef.listeners.PlayerInteractListener;
+import fr.lostaria.spleef.listeners.*;
 import fr.worsewarn.cosmox.API;
 import fr.worsewarn.cosmox.api.achievements.Achievement;
 import fr.worsewarn.cosmox.api.statistics.Statistic;
@@ -64,8 +62,10 @@ public final class Spleef extends JavaPlugin {
         gameManager.setPhase(SpleefPhase.START);
 
         getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
+        getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(this), this);
 
 
     }
