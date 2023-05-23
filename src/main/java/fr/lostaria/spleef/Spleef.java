@@ -41,11 +41,7 @@ public final class Spleef extends JavaPlugin {
         mapsLocation.add(new MapLocation("name", MapLocationType.STRING));
         mapsLocation.add(new MapLocation("authors", MapLocationType.STRING));
         mapsLocation.add(new MapLocation("spawn", MapLocationType.LOCATION));
-        mapsLocation.add(new MapLocation("layer1", MapLocationType.CUBOID));
-        mapsLocation.add(new MapLocation("layer2", MapLocationType.CUBOID));
-        mapsLocation.add(new MapLocation("layer3", MapLocationType.CUBOID));
-        mapsLocation.add(new MapLocation("layer4", MapLocationType.CUBOID));
-        mapsLocation.add(new MapLocation("layer5", MapLocationType.CUBOID));
+        mapsLocation.add(new MapLocation("layers", MapLocationType.LIST_CUBOID));
 
         List<MapTemplate> mapsTemplate = new ArrayList<>();
         mapsTemplate.add(new MapTemplate(MapType.NONE, mapsLocation));
