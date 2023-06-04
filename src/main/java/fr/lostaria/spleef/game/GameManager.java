@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.game;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.tasks.DestructionLayersTask;
 import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
 import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
 import fr.worsewarn.cosmox.game.Phase;
@@ -50,6 +51,7 @@ public class GameManager {
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
                 pls.setGameMode(GameMode.SURVIVAL);
                 snowballsInventory.put(pls, 0);
+                main.getAPI().getPlayer(pls).setTeam(Team.NO_TEAM);
             }else{
                 pls.setGameMode(GameMode.SPECTATOR);
             }
@@ -82,6 +84,9 @@ public class GameManager {
 
         IncrementPlayerSnowballTask incrementSnowballTask = new IncrementPlayerSnowballTask(main);
         incrementSnowballTask.runTaskTimer(main, 20, 20);
+
+        DestructionLayersTask destructionLayersTask = new DestructionLayersTask(main);
+        destructionLayersTask.runTaskTimer(main, 20, 20);
     }
 
     public CosmoxScoreboard createScoreboard(Player player){

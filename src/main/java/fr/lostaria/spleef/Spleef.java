@@ -56,7 +56,7 @@ public final class Spleef extends JavaPlugin {
         game.setPreparationTime(10);
         game.setDefaultFriendlyFire(true);
 
-        Parameter destructionCooldown = new Parameter("destructionCooldown", "", 180f, 20f, 300f, new ItemBuilder(Material.PLAYER_HEAD).customSkull("fcb8f06885d1daafd26cd95b3482cb525d881a67e0d247161b908d93d56d114f").setDisplayName("§fDestruction des plateformes").setLore(Arrays.asList(" ", "§7Durée de cooldown avant la destruction","§7de chaque plateforme"," "," §7Actuellement §e%time")).build(), Arrays.asList(5f, 10f, 20f), false, false);
+        Parameter destructionCooldown = new Parameter("destructionCooldown", "", 180f, 20f, 300f, new ItemBuilder(Material.PLAYER_HEAD).customSkull("fcb8f06885d1daafd26cd95b3482cb525d881a67e0d247161b908d93d56d114f").setDisplayName("§fDestruction des plateformes").setLore(Arrays.asList(" ", "§7Durée de cooldown avant la destruction","§7de chaque plateforme"," "," §7Actuellement §e%time")).build(), Arrays.asList(5f, 10f, 20f), true, false);
         game.addParameter(destructionCooldown);
 
         api.registerNewGame(game);
