@@ -31,7 +31,7 @@ public class DestructionLayersTask extends BukkitRunnable {
 
     public DestructionLayersTask(Spleef main) {
         this.main = main;
-        updateBoosbar(false);
+        updateBoosbar(false, false);
         this.layers = main.getAPI().getManager().getMap().getCuboids("layers");
     }
 
@@ -49,16 +49,22 @@ public class DestructionLayersTask extends BukkitRunnable {
 
         if(nbPlayersOnY <= 1 && !lockCheck){
             lockCheck = true;
-            updateBoosbar(true);
+            updateBoosbar(true, false);
         }
     }
 
 
-    private void updateBoosbar(boolean force){
+    private void updateBoosbar(boolean shortTimer, boolean destruction){
         if(currentBarAnimation != null) {
             currentBarAnimation.cancelAnimation();
         }
-        currentBarAnimation = new BarAnimation((force ? 11  : main.getAPI().getGameParameter("destructionCooldown")), "§eProchaine destruction dans %i %s", BarColor.YELLOW);
+        if(destruction){
+            currentBarAnimation = new BarAnimation(Integer.MAX_VALUE, "§4§kk§c Destruction §4§kk§r", BarColor.RED);
+            currentBarAnimation.setForAll(true);
+            currentBarAnimation.startAnimation(main.getAPI());
+            return;
+        }
+        currentBarAnimation = new BarAnimation((shortTimer ? 11  : main.getAPI().getGameParameter("destructionCooldown")), "§eProchaine destruction dans %i %s", BarColor.YELLOW);
         currentBarAnimation.setForAll(true);
         currentBarAnimation.startAnimation(main.getAPI());
         currentBarAnimation.setCallBack(this::destroyCurrentLayer);
@@ -94,6 +100,8 @@ public class DestructionLayersTask extends BukkitRunnable {
             }
         }
 
+        updateBoosbar(false, true);
+
         BukkitRunnable clearBlocksTask = new BukkitRunnable() {
             private final int blocksPerIteration = 30; // Nombre de blocs à casser par itération
             private int blocksRemaining = blockLocations.size();
@@ -107,7 +115,7 @@ public class DestructionLayersTask extends BukkitRunnable {
                         pls.sendMessage("§7§oPfiou, ça décoiffe..");
                     }
 
-                    updateBoosbar(false);
+                    updateBoosbar(false, false);
                     lockCheck = false;
                     currentLayer++;
                     return;
