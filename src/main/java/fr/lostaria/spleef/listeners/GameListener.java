@@ -16,6 +16,13 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onGameStart(GameStartEvent event){
+        main.getServer().getPluginManager().registerEvents(new BlockBreakListener(main), main);
+        main.getServer().getPluginManager().registerEvents(new EntityDamageListener(), main);
+        main.getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), main);
+        main.getServer().getPluginManager().registerEvents(new GameListener(main), main);
+        main.getServer().getPluginManager().registerEvents(new PlayerInteractListener(main), main);
+        main.getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(main), main);
+
         main.getGameManager().startGame(event);
     }
 

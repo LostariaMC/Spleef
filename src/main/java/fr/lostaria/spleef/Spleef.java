@@ -63,14 +63,6 @@ public final class Spleef extends JavaPlugin {
 
         gameManager.setPhase(SpleefPhase.START);
 
-        getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
-        getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
-        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
-        getServer().getPluginManager().registerEvents(new GameListener(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractListener(this), this);
-        getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(this), this);
-
-
     }
 
     @Override
