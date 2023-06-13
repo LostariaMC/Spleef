@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.tasks;
 
 import fr.lostaria.spleef.Spleef;
+import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.tools.utils.BarAnimation;
 import fr.worsewarn.cosmox.tools.utils.Pair;
 import org.bukkit.*;
@@ -15,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -29,6 +31,8 @@ public class DestructionLayersTask extends BukkitRunnable {
 
     private boolean lockCheck = false;
 
+    private List<Player> playersOnY = new ArrayList<>();
+
     public DestructionLayersTask(Spleef main) {
         this.main = main;
         updateBoosbar(false, false);
@@ -38,16 +42,22 @@ public class DestructionLayersTask extends BukkitRunnable {
     @Override
     public void run() {
 
+        if(currentLayer >= layers.size()){
+            cancel();
+            return;
+        }
+
         int targetY = layers.get(currentLayer).getLeft().getBlockY();
-        int nbPlayersOnY = 0; // Le J en Y
 
         for(Player pls : Bukkit.getOnlinePlayers()){
-            if(pls.getLocation().getBlockY() >= targetY){
-                nbPlayersOnY++;
+            if(pls.getLocation().getBlockY() >= targetY && !lockCheck){
+                if(!playersOnY.contains(pls)){
+                    playersOnY.add(pls);
+                }
             }
         }
 
-        if(nbPlayersOnY <= 1 && !lockCheck){
+        if(playersOnY.size() <= 1 && !lockCheck && currentLayer < layers.size() - 1){
             lockCheck = true;
             updateBoosbar(true, false);
         }
@@ -119,11 +129,22 @@ public class DestructionLayersTask extends BukkitRunnable {
                 if (blockLocations.isEmpty()) {
                     this.cancel();
 
-                    for(Player pls : Bukkit.getOnlinePlayers()){
-                        pls.sendMessage("§7§oPfiou, ça décoiffe..");
+                    System.out.println(playersOnY.size());
+
+                    for(Player pls : playersOnY){
+                        CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(pls);
+                        List<String> interjections = Arrays.asList("Pfiou, ça décoiffe..", "Wow, ça a fait vibrer mes chaussettes..", "Wow, c'était l'essorage ou quoi !");
+                        pls.sendMessage("§7§o" + interjections.get(new Random().nextInt(interjections.size())));
+                        cosmoxPlayer.addMolecules(1, "§eSurvivant");
+                    }
+                    playersOnY.clear();
+
+                    if(currentLayer < layers.size() - 1){
+                        updateBoosbar(false, false);
+                    }else{
+                        currentBarAnimation.cancelAnimation();
                     }
 
-                    updateBoosbar(false, false);
                     lockCheck = false;
                     currentLayer++;
                     return;
