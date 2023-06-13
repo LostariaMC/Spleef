@@ -103,8 +103,16 @@ public class DestructionLayersTask extends BukkitRunnable {
         updateBoosbar(false, true);
 
         BukkitRunnable clearBlocksTask = new BukkitRunnable() {
-            private final int blocksPerIteration = 30; // Nombre de blocs à casser par itération
             private int blocksRemaining = blockLocations.size();
+
+            private final int minValue = 30;
+            private final int maxValue = 70;
+            private final int minBlocks = 2000;
+            private final int maxBlocks = 6000;
+
+            double ratio = (double)(blocksRemaining - minBlocks) / (maxBlocks - minBlocks);
+            private final int blocksPerIteration = (int)(minValue + ratio * (maxValue - minValue));
+
 
             @Override
             public void run() {
@@ -120,8 +128,6 @@ public class DestructionLayersTask extends BukkitRunnable {
                     currentLayer++;
                     return;
                 }
-
-                Bukkit.broadcastMessage("§7§o" + blocksRemaining + " blocs restants..");
 
                 int blocksToBreak = Math.min(blocksPerIteration, blocksRemaining);
 

@@ -36,6 +36,8 @@ public final class Spleef extends JavaPlugin {
 
         gameManager = new GameManager(this);
 
+        getServer().getPluginManager().registerEvents(new GameListener(this), this);
+
         List<Statistic> statistics = new ArrayList<>();
         List<Achievement> achievements = new ArrayList<>();
 
