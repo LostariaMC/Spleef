@@ -56,6 +56,9 @@ public class DestructionLayersTask extends BukkitRunnable {
             lockCheck = true;
             updateBoosbar(true, false);
         }
+        if (!lockCheck) {
+            playersOnY.clear();
+        }
     }
 
 
