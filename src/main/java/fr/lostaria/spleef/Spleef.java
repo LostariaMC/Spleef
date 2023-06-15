@@ -34,10 +34,6 @@ public final class Spleef extends JavaPlugin {
     public void onEnable() {
         api = API.instance();
 
-        gameManager = new GameManager(this);
-
-        getServer().getPluginManager().registerEvents(new GameListener(this), this);
-
         List<Statistic> statistics = new ArrayList<>();
         List<Achievement> achievements = new ArrayList<>();
 
@@ -62,6 +58,11 @@ public final class Spleef extends JavaPlugin {
         game.addParameter(destructionCooldown);
 
         api.registerNewGame(game);
+
+
+        gameManager = new GameManager(this);
+
+        getServer().getPluginManager().registerEvents(new GameListener(this), this);
 
         gameManager.setPhase(SpleefPhase.START);
 

@@ -8,16 +8,17 @@ import fr.worsewarn.cosmox.game.Phase;
 import fr.worsewarn.cosmox.game.events.GameStartEvent;
 import fr.worsewarn.cosmox.game.teams.Team;
 import fr.worsewarn.cosmox.tools.map.GameMap;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import fr.worsewarn.cosmox.tools.utils.Pair;
+import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GameManager {
@@ -30,6 +31,9 @@ public class GameManager {
 
     private Map<Player, Integer> snowballsInventory = new HashMap<>();
 
+    private List<Pair<Location, Location>> layers;
+    private List<List<Location>> layersLocations = new ArrayList<>();
+
 
     public GameManager(Spleef main){
         this.main = main;
@@ -40,6 +44,36 @@ public class GameManager {
         map = event.getMap();
 
         main.getAPI().getManager().setPhase(Phase.GAME);
+
+        layers = main.getAPI().getManager().getMap().getCuboids("layers");
+
+        for(Pair<Location, Location> layer : layers){
+            Location loc1 = layer.getLeft();
+            Location loc2 = layer.getRight();
+
+            int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
+            int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
+            int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+
+            int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
+            int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
+            int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
+            int x = minX;
+            int y = minY;
+            int z = minZ;
+
+            List<Location> blockLocations = new ArrayList<>();
+            for (int i = minX; i <= maxX; i++) {
+                for (int j = minY; j <= maxY; j++) {
+                    for (int k = minZ; k <= maxZ; k++) {
+                        Location l = new Location(loc1.getWorld(), i, j, k);
+                        blockLocations.add(l);
+                    }
+                }
+            }
+            layersLocations.add(blockLocations);
+        }
 
         for(Player pls : Bukkit.getOnlinePlayers()){
             pls.getInventory().clear();
@@ -73,6 +107,7 @@ public class GameManager {
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
 
                 ItemStack shovel = new ItemStack(Material.DIAMOND_SHOVEL);
+                shovel.addEnchantment(Enchantment.DIG_SPEED, 5);
                 pls.getInventory().setItem(0, shovel);
 
                 updatePlayerSnowballsInventory(pls);
@@ -122,6 +157,25 @@ public class GameManager {
             player.getInventory().setItemInOffHand(new ItemStack(Material.SNOWBALL, snowballs));
         }
         player.updateInventory();
+    }
+
+    public List<Pair<Location, Location>> getLayers() {
+        return layers;
+    }
+
+    public List<List<Location>> getLayersLocations() {
+        return layersLocations;
+    }
+
+    public List<Location> getLayerLocations(int layer){
+        return layersLocations.get(layer);
+    }
+
+    public boolean isLocationInLayers(Location location){
+        for(List<Location> layer : layersLocations){
+            if(layer.contains(location)) return true;
+        }
+        return false;
     }
 
 }

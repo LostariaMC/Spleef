@@ -7,6 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockBreakListener implements Listener {
 
     private Spleef main;
@@ -18,7 +21,7 @@ public class BlockBreakListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
 
-        if(event.getBlock().getType() == Material.SNOW_BLOCK && main.getGameManager().getPhase() == SpleefPhase.GAME){
+        if(main.getGameManager().isLocationInLayers(event.getBlock().getLocation()) && main.getGameManager().getPhase() == SpleefPhase.GAME){
             event.setDropItems(false);
         }else{
             event.setCancelled(true);

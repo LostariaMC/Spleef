@@ -21,7 +21,6 @@ public class DestructionLayersTask extends BukkitRunnable {
 
     private BarAnimation currentBarAnimation = null;
 
-    private List<Pair<Location, Location>> layers;
     private int currentLayer = 0;
 
     private boolean lockCheck = false;
@@ -31,18 +30,17 @@ public class DestructionLayersTask extends BukkitRunnable {
     public DestructionLayersTask(Spleef main) {
         this.main = main;
         updateBoosbar(false, false);
-        this.layers = main.getAPI().getManager().getMap().getCuboids("layers");
     }
 
     @Override
     public void run() {
 
-        if(currentLayer >= layers.size()){
+        if(currentLayer >= main.getGameManager().getLayers().size()){
             cancel();
             return;
         }
 
-        int targetY = layers.get(currentLayer).getLeft().getBlockY();
+        int targetY = main.getGameManager().getLayers().get(currentLayer).getLeft().getBlockY();
 
         for(Player pls : Bukkit.getOnlinePlayers()){
             if(pls.getLocation().getBlockY() >= targetY && !lockCheck){
@@ -52,7 +50,7 @@ public class DestructionLayersTask extends BukkitRunnable {
             }
         }
 
-        if(playersOnY.size() <= 1 && !lockCheck && currentLayer < layers.size() - 1){
+        if(playersOnY.size() <= 1 && !lockCheck && currentLayer < main.getGameManager().getLayers().size() - 1){
             lockCheck = true;
             updateBoosbar(true, false);
         }
@@ -81,32 +79,7 @@ public class DestructionLayersTask extends BukkitRunnable {
     private void destroyCurrentLayer(){
         main.getAPI().getUtils().broadcast(main.getPrefix() + "§fLa couche §e" + (currentLayer + 1) + "§f se détruit !");
 
-        Location loc1 = layers.get(currentLayer).getLeft();
-        Location loc2 = layers.get(currentLayer).getRight();
-
-        int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
-        int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
-        int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
-
-        int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
-        int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
-        int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
-
-        int x = minX;
-        int y = minY;
-        int z = minZ;
-
-        List<Location> blockLocations = new ArrayList<>();
-        for (int i = minX; i <= maxX; i++) {
-            for (int j = minY; j <= maxY; j++) {
-                for (int k = minZ; k <= maxZ; k++) {
-                    Location l = new Location(loc1.getWorld(), i, j, k);
-                    if(l.getBlock().getType() != Material.AIR) {
-                        blockLocations.add(l);
-                    }
-                }
-            }
-        }
+        List<Location> blockLocations = main.getGameManager().getLayerLocations(currentLayer);
 
         updateBoosbar(false, true);
 
@@ -127,8 +100,6 @@ public class DestructionLayersTask extends BukkitRunnable {
                 if (blockLocations.isEmpty()) {
                     this.cancel();
 
-                    System.out.println(playersOnY.size());
-
                     for(Player pls : playersOnY){
                         CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(pls);
                         List<String> interjections = Arrays.asList("Pfiou, ça décoiffe..", "Wow, ça a fait vibrer mes chaussettes..", "Wow, c'était l'essorage ou quoi !");
@@ -137,7 +108,7 @@ public class DestructionLayersTask extends BukkitRunnable {
                     }
                     playersOnY.clear();
 
-                    if(currentLayer < layers.size() - 1){
+                    if(currentLayer < main.getGameManager().getLayers().size() - 1){
                         updateBoosbar(false, false);
                     }else{
                         currentBarAnimation.cancelAnimation();
