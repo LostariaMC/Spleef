@@ -77,6 +77,7 @@ public class DestructionLayersTask extends BukkitRunnable {
     }
 
     private void destroyCurrentLayer(){
+        lockCheck = true;
         main.getAPI().getUtils().broadcast(main.getPrefix() + "§fLa couche §e" + (currentLayer + 1) + "§f se détruit !");
 
         List<Location> blockLocations = main.getGameManager().getLayerLocations(currentLayer);
