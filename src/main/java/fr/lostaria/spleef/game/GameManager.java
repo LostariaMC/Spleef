@@ -117,8 +117,12 @@ public class GameManager {
             }
         }
 
-        IncrementPlayerSnowballTask incrementSnowballTask = new IncrementPlayerSnowballTask(main);
-        incrementSnowballTask.runTaskTimer(main, 20, 20);
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            if(main.getAPI().getTeamUtils().isInTeam(pls, Team.NO_TEAM)){
+                IncrementPlayerSnowballTask incrementSnowballTask = new IncrementPlayerSnowballTask(main, pls);
+                incrementSnowballTask.runTaskTimer(main, 20, 20);
+            }
+        }
 
         DestructionLayersTask destructionLayersTask = new DestructionLayersTask(main);
         destructionLayersTask.runTaskTimer(main, 20, 20);

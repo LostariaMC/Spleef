@@ -1,6 +1,8 @@
 package fr.lostaria.spleef.listeners;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,8 +24,17 @@ public class ProjectileLaunchListener implements Listener {
             if(event.getEntity().getType() == EntityType.SNOWBALL){
                 int snowballs = main.getGameManager().getSnowballsInventory().get(player);
                 main.getGameManager().getSnowballsInventory().put(player, snowballs - 1);
-                if(snowballs == 0){
-                    main.getGameManager().updatePlayerSnowballsInventory(player);
+                if(snowballs >= 6){
+                    IncrementPlayerSnowballTask incrementSnowballTask = new IncrementPlayerSnowballTask(main, player);
+                    incrementSnowballTask.runTaskTimer(main, 20, 20);
+                }
+                if(snowballs <= 1){
+                    Bukkit.getScheduler().runTaskLater(main, new Runnable() {
+                        @Override
+                        public void run() {
+                            main.getGameManager().updatePlayerSnowballsInventory(player);
+                        }
+                    }, 1);
                 }
             }
         }
