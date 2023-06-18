@@ -2,6 +2,7 @@ package fr.lostaria.spleef.tasks;
 
 import fr.lostaria.spleef.Spleef;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
+import fr.worsewarn.cosmox.game.teams.Team;
 import fr.worsewarn.cosmox.tools.utils.BarAnimation;
 import fr.worsewarn.cosmox.tools.utils.Pair;
 import org.bukkit.*;
@@ -43,7 +44,7 @@ public class DestructionLayersTask extends BukkitRunnable {
         int targetY = main.getGameManager().getLayers().get(currentLayer).getLeft().getBlockY();
 
         for(Player pls : Bukkit.getOnlinePlayers()){
-            if(pls.getLocation().getBlockY() >= targetY && !lockCheck){
+            if(main.getAPI().getTeamUtils().isInTeam(pls, Team.NO_TEAM) && pls.getLocation().getBlockY() >= targetY && !lockCheck){
                 if(!playersOnY.contains(pls)){
                     playersOnY.add(pls);
                 }
