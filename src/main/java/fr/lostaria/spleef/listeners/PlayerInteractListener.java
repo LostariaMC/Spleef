@@ -21,7 +21,7 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         if(event.getItem() == null) return;
         if(event.getItem().getType() == Material.FIREWORK_STAR){
-            main.getAPI().getUtils().sendActionBar("§cAucune boule de neige en stock !");
+            main.getAPI().getUtils().sendActionBar("§cAucune boule de neige en stock !", player);
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
         }
     }
