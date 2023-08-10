@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.tasks;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.game.SpleefPhase;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.game.teams.Team;
 import fr.worsewarn.cosmox.tools.utils.BarAnimation;
@@ -38,6 +39,12 @@ public class DestructionLayersTask extends BukkitRunnable {
 
         if(currentLayer >= main.getGameManager().getLayers().size()){
             cancel();
+            return;
+        }
+
+        if(main.getGameManager().getPhase() != SpleefPhase.GAME){
+            cancel();
+            currentBarAnimation.cancelAnimation();
             return;
         }
 
@@ -106,7 +113,7 @@ public class DestructionLayersTask extends BukkitRunnable {
                         CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(pls);
                         List<String> interjections = Arrays.asList("Pfiou, ça décoiffe..", "Wow, ça a fait vibrer mes chaussettes..", "Wow, c'était l'essorage ou quoi !");
                         pls.sendMessage("§7§o" + interjections.get(new Random().nextInt(interjections.size())));
-                        cosmoxPlayer.addMolecules(1, "§eSurvivant");
+                        cosmoxPlayer.addMolecules(3, "§eSurvivant");
                     }
                     playersOnY.clear();
 
@@ -130,14 +137,26 @@ public class DestructionLayersTask extends BukkitRunnable {
                     block.setType(Material.AIR);
 
                     block.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, blockLocation, 1, 0, 0, 0, 0);
-                    for(Player pls : Bukkit.getOnlinePlayers()){
-                        pls.playSound(blockLocation, Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 1f);
-                    }
                 }
 
                 blocksRemaining -= blocksToBreak;
             }
         };
+
+        final int[] playCount = {20};
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(Player pls : Bukkit.getOnlinePlayers()){
+                    pls.playSound(pls.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.3f, 1f);
+                }
+                playCount[0]--;
+                if(playCount[0] < 0){
+                    this.cancel();
+                }
+            }
+
+        }.runTaskTimer(main, 3, 3);
 
         clearBlocksTask.runTaskTimer(main, 0, 0);
     }

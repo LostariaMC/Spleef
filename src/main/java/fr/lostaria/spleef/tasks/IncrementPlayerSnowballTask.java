@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.tasks;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.game.SpleefPhase;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,6 +23,11 @@ public class IncrementPlayerSnowballTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        if(main.getGameManager().getPhase() != SpleefPhase.GAME){
+            cancel();
+            return;
+        }
+
         if(timer == 0){
             int snowballs = main.getGameManager().getSnowballsInventory().get(player);
             if(snowballs < 6){

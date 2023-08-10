@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
 public class EntityDamageByEntityListener implements Listener {
@@ -14,7 +15,7 @@ public class EntityDamageByEntityListener implements Listener {
     public void onDamageByEntity(EntityDamageByEntityEvent event){
         if (event.getDamager() instanceof Snowball && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            Vector vector = player.getLocation().toVector().subtract(event.getDamager().getLocation().toVector()).normalize().multiply(4).setY(1.5);
+            Vector vector = player.getLocation().toVector().subtract(event.getDamager().getLocation().toVector()).normalize().multiply(2).setY(0.6);
             player.setVelocity(vector);
         }
     }

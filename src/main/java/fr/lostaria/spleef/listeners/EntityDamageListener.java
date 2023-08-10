@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.listeners;
 
 import fr.lostaria.spleef.Spleef;
+import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.game.teams.Team;
 import fr.worsewarn.cosmox.tools.chat.Messages;
 import org.bukkit.Bukkit;
@@ -22,14 +23,15 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+        if (event.getCause() == EntityDamageEvent.DamageCause.FALL || event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             event.setCancelled(true);
+            return;
         }
 
         if(event.getEntity() instanceof Player){
             Player player = (Player) event.getEntity();
             if(player.getHealth() <= event.getDamage()){
-                event.setDamage(0);
+                event.setCancelled(true);
                 player.setGameMode(GameMode.SPECTATOR);
                 player.setHealth(20);
                 player.setFoodLevel(20);
@@ -50,6 +52,9 @@ public class EntityDamageListener implements Listener {
                     pls.sendMessage(main.getPrefix() + Messages.BROADCAST_DEATH.formatted(player.getName()));
                     pls.playSound(pls.getLocation(), Sound.ENTITY_VILLAGER_DEATH, 0.5f, 0.5f);
                 }
+
+                CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(player);
+                cosmoxPlayer.addMolecules(4, "§cLot de consolation");
 
                 player.sendTitle(ChatColor.RED + "§e☠ §cVous êtes mort §e☠", ChatColor.GRAY + "Vous êtes désormais spectateur", 20, 60, 20);
 

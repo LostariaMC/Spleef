@@ -4,6 +4,7 @@ import fr.lostaria.spleef.Spleef;
 import fr.lostaria.spleef.tasks.DamageTask;
 import fr.lostaria.spleef.tasks.DestructionLayersTask;
 import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
+import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
 import fr.worsewarn.cosmox.game.Phase;
 import fr.worsewarn.cosmox.game.events.GameStartEvent;
@@ -15,6 +16,7 @@ import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -109,6 +111,9 @@ public class GameManager {
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
 
                 ItemStack shovel = new ItemStack(Material.DIAMOND_SHOVEL);
+                ItemMeta shovelMeta = shovel.getItemMeta();
+                shovelMeta.setUnbreakable(true);
+                shovel.setItemMeta(shovelMeta);
                 shovel.addEnchantment(Enchantment.DIG_SPEED, 5);
                 pls.getInventory().setItem(0, shovel);
 
@@ -150,13 +155,21 @@ public class GameManager {
 
     public void win(Player player){
         setPhase(SpleefPhase.FINISH);
+
+        player.getInventory().clear();
+        player.setGameMode(GameMode.CREATIVE);
+
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            pls.playSound(pls.getLocation(), Sound.MUSIC_DISC_STAL, SoundCategory.AMBIENT, 20f, 1.4f);
+            pls.sendMessage(main.getPrefix() + Messages.BROADCAST_WIN.formatted(player.getName()));
+        }
+
+        CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(player);
+        cosmoxPlayer.addMolecules(8, "§aVictoire");
+
         main.getAPI().getManager().setPhase(Phase.END);
 
         main.getAPI().getManager().getGame().addToResume(Messages.SUMMARY_WIN.formatted(player.getName()));
-
-        for(Player pls : Bukkit.getOnlinePlayers()){
-            pls.playSound(pls.getLocation(), Sound.MUSIC_DISC_STAL, SoundCategory.AMBIENT, 20f, 1.5f);
-        }
     }
 
     public CosmoxScoreboard createScoreboard(Player player){
