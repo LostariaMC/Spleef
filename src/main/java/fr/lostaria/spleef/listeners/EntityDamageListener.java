@@ -2,6 +2,8 @@ package fr.lostaria.spleef.listeners;
 
 import fr.lostaria.spleef.Spleef;
 import fr.worsewarn.cosmox.game.teams.Team;
+import fr.worsewarn.cosmox.tools.chat.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -44,7 +46,14 @@ public class EntityDamageListener implements Listener {
 
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_DEATH, 1f, 1f);
 
+                for(Player pls : Bukkit.getOnlinePlayers()){
+                    pls.sendMessage(main.getPrefix() + Messages.BROADCAST_DEATH.formatted(player.getName()));
+                    pls.playSound(pls.getLocation(), Sound.ENTITY_VILLAGER_DEATH, 0.5f, 0.5f);
+                }
+
                 player.sendTitle(ChatColor.RED + "§e☠ §cVous êtes mort §e☠", ChatColor.GRAY + "Vous êtes désormais spectateur", 20, 60, 20);
+
+                main.getGameManager().checkWin();
             }
         }
     }

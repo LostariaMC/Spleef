@@ -8,6 +8,7 @@ import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
 import fr.worsewarn.cosmox.game.Phase;
 import fr.worsewarn.cosmox.game.events.GameStartEvent;
 import fr.worsewarn.cosmox.game.teams.Team;
+import fr.worsewarn.cosmox.tools.chat.Messages;
 import fr.worsewarn.cosmox.tools.map.GameMap;
 import fr.worsewarn.cosmox.tools.utils.Pair;
 import org.bukkit.*;
@@ -130,6 +131,32 @@ public class GameManager {
 
         DamageTask damageTask = new DamageTask(main);
         damageTask.runTaskTimer(main, 10, 10);
+    }
+
+    public void checkWin(){
+        int players = 0;
+        Player winner = null;
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
+                players++;
+                winner = pls;
+            }
+        }
+
+        if(players == 1){
+            win(winner);
+        }
+    }
+
+    public void win(Player player){
+        setPhase(SpleefPhase.FINISH);
+        main.getAPI().getManager().setPhase(Phase.END);
+
+        main.getAPI().getManager().getGame().addToResume(Messages.SUMMARY_WIN.formatted(player.getName()));
+
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            pls.playSound(pls.getLocation(), Sound.MUSIC_DISC_STAL, SoundCategory.AMBIENT, 20f, 1.5f);
+        }
     }
 
     public CosmoxScoreboard createScoreboard(Player player){
