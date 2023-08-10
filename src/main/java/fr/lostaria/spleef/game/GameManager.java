@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.game;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.tasks.DamageTask;
 import fr.lostaria.spleef.tasks.DestructionLayersTask;
 import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
 import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
@@ -126,6 +127,9 @@ public class GameManager {
 
         DestructionLayersTask destructionLayersTask = new DestructionLayersTask(main);
         destructionLayersTask.runTaskTimer(main, 20, 20);
+
+        DamageTask damageTask = new DamageTask(main);
+        damageTask.runTaskTimer(main, 10, 10);
     }
 
     public CosmoxScoreboard createScoreboard(Player player){
