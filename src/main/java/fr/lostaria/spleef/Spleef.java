@@ -7,6 +7,7 @@ import fr.worsewarn.cosmox.API;
 import fr.worsewarn.cosmox.api.achievements.Achievement;
 import fr.worsewarn.cosmox.api.statistics.Statistic;
 import fr.worsewarn.cosmox.game.Game;
+import fr.worsewarn.cosmox.game.GameVariables;
 import fr.worsewarn.cosmox.game.configuration.Parameter;
 import fr.worsewarn.cosmox.tools.items.ItemBuilder;
 import fr.worsewarn.cosmox.tools.map.MapLocation;
@@ -35,6 +36,12 @@ public final class Spleef extends JavaPlugin {
         api = API.instance();
 
         List<Statistic> statistics = new ArrayList<>();
+        statistics.add(new Statistic(GameVariables.GAMES_PLAYED, "Parties jouées"));
+        statistics.add(new Statistic(GameVariables.TIME_PLAYED, "Temps de jeu"));
+        statistics.add(new Statistic(GameVariables.WIN, "Victoires"));
+        statistics.add(new Statistic("lastSurvivor", "Survivant"));
+        statistics.add(new Statistic("blocksBreak", "Blocs cassés"));
+
         List<Achievement> achievements = new ArrayList<>();
 
         List<MapLocation> mapsLocation = new ArrayList<MapLocation>();
@@ -46,11 +53,10 @@ public final class Spleef extends JavaPlugin {
         List<MapTemplate> mapsTemplate = new ArrayList<>();
         mapsTemplate.add(new MapTemplate(MapType.NONE, mapsLocation));
 
-        game = new Game("spleef", "Spleef", ChatColor.DARK_AQUA, Material.SNOWBALL, null, 2, false, true, statistics, achievements, Arrays.asList(" ","§c/!\\ Jeu en développement /!\\"," ","§7Survis le plus longtemps possible","§7en faisant tomber tes adversaires !","§7Le dernier sur la plateforme","§7remporte la partie !"), mapsTemplate);
+        game = new Game("spleef", "Spleef", ChatColor.DARK_AQUA, Material.SNOWBALL, null, 2, false, true, statistics, achievements, Arrays.asList(" ","§7Survis le plus longtemps possible","§7en faisant tomber tes adversaires !","§7Le dernier sur la plateforme","§7remporte la partie !"), mapsTemplate);
         game.setGameAuthor("Erpriex");
         game.setTags("Solo");
         game.setShowScoreTablist(true);
-        game.setRestrictedGame();
         game.setPreparationTime(10);
         game.setDefaultFriendlyFire(true);
 
