@@ -4,8 +4,10 @@ import fr.lostaria.spleef.Spleef;
 import fr.lostaria.spleef.tasks.DamageTask;
 import fr.lostaria.spleef.tasks.DestructionLayersTask;
 import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
+import fr.lostaria.spleef.tasks.TimePlayedTask;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
+import fr.worsewarn.cosmox.game.GameVariables;
 import fr.worsewarn.cosmox.game.Phase;
 import fr.worsewarn.cosmox.game.events.GameStartEvent;
 import fr.worsewarn.cosmox.game.teams.Team;
@@ -86,10 +88,13 @@ public class GameManager {
                 pls.removePotionEffect(effect.getType());
             }
 
+            CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(pls);
+
             if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
                 pls.setGameMode(GameMode.SURVIVAL);
                 snowballsInventory.put(pls, 0);
                 main.getAPI().getPlayer(pls).setTeam(Team.NO_TEAM);
+                cosmoxPlayer.setStatistic(GameVariables.GAMES_PLAYED, 1);
             }else{
                 pls.setGameMode(GameMode.SPECTATOR);
             }
@@ -136,6 +141,9 @@ public class GameManager {
 
         DamageTask damageTask = new DamageTask(main);
         damageTask.runTaskTimer(main, 10, 10);
+
+        TimePlayedTask timePlayedTask = new TimePlayedTask(main);
+        timePlayedTask.runTaskTimer(main, 20, 20);
     }
 
     public void checkWin(){
@@ -166,6 +174,7 @@ public class GameManager {
 
         CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(player);
         cosmoxPlayer.addMolecules(8, "§aVictoire");
+        cosmoxPlayer.setStatistic(GameVariables.WIN, 1);
 
         main.getAPI().getManager().setPhase(Phase.END);
 
