@@ -37,10 +37,10 @@ public final class Spleef extends JavaPlugin {
 
         List<Statistic> statistics = new ArrayList<>();
         statistics.add(new Statistic(GameVariables.GAMES_PLAYED, "Parties jouées"));
-        statistics.add(new Statistic(GameVariables.TIME_PLAYED, "Temps de jeu"));
+        statistics.add(new Statistic(GameVariables.TIME_PLAYED, "Temps de jeu", true));
         statistics.add(new Statistic(GameVariables.WIN, "Victoires"));
-        statistics.add(new Statistic("lastSurvivor", "Survivant"));
-        statistics.add(new Statistic("blocksBreak", "Blocs cassés"));
+        statistics.add(new Statistic("lastSurvivor", "Survivant", true, true));
+        statistics.add(new Statistic("blocksBreak", "Blocs cassés", true, true));
 
         List<Achievement> achievements = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.tasks;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.game.SpleefPhase;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.game.GameVariables;
 import fr.worsewarn.cosmox.game.teams.Team;
@@ -23,6 +24,10 @@ public class TimePlayedTask extends BukkitRunnable {
                 CosmoxPlayer cosmoxPls = main.getAPI().getPlayer(pls);
                 cosmoxPls.setStatistic(GameVariables.TIME_PLAYED, 1);
             }
+        }
+
+        if(main.getGameManager().getPhase() != SpleefPhase.FINISH){
+            cancel();
         }
     }
 
