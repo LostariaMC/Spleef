@@ -20,13 +20,13 @@ public class TimePlayedTask extends BukkitRunnable {
     @Override
     public void run() {
         for(Player pls : Bukkit.getOnlinePlayers()){
-            if(main.getAPI().getTeamUtils().isInTeam(pls,Team.NO_TEAM)){
+            if(main.getAPI().getTeamUtils().isInTeam(pls, Team.NO_TEAM)){
                 CosmoxPlayer cosmoxPls = main.getAPI().getPlayer(pls);
                 cosmoxPls.addStatistic(GameVariables.TIME_PLAYED, 1);
             }
         }
 
-        if(main.getGameManager().getPhase() != SpleefPhase.FINISH){
+        if(main.getGameManager().getPhase() != SpleefPhase.GAME){
             cancel();
         }
     }
