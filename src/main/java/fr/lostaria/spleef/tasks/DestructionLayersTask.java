@@ -115,7 +115,7 @@ public class DestructionLayersTask extends BukkitRunnable {
                         List<String> interjections = Arrays.asList("Pfiou, ça décoiffe..", "Wow, ça a fait vibrer mes chaussettes..", "Wow, c'était l'essorage ou quoi !");
                         pls.sendMessage("§7§o" + interjections.get(new Random().nextInt(interjections.size())));
                         cosmoxPlayer.addMolecules(3, "§eSurvivant");
-                        cosmoxPlayer.setStatistic("lastSurvivor", 1);
+                        cosmoxPlayer.addStatistic("lastSurvivor", 1);
                     }
                     playersOnY.clear();
 

@@ -25,7 +25,7 @@ public class BlockBreakListener implements Listener {
 
             Player player = event.getPlayer();
             CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(player);
-            cosmoxPlayer.setStatistic("blocksBreak", 1);
+            cosmoxPlayer.addStatistic("blocksBreak", 1);
         }else{
             event.setCancelled(true);
         }

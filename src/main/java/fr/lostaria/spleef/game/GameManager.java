@@ -94,7 +94,7 @@ public class GameManager {
                 pls.setGameMode(GameMode.SURVIVAL);
                 snowballsInventory.put(pls, 0);
                 main.getAPI().getPlayer(pls).setTeam(Team.NO_TEAM);
-                cosmoxPlayer.setStatistic(GameVariables.GAMES_PLAYED, 1);
+                cosmoxPlayer.addStatistic(GameVariables.GAMES_PLAYED, 1);
             }else{
                 pls.setGameMode(GameMode.SPECTATOR);
             }
@@ -174,7 +174,7 @@ public class GameManager {
 
         CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(player);
         cosmoxPlayer.addMolecules(8, "§aVictoire");
-        cosmoxPlayer.setStatistic(GameVariables.WIN, 1);
+        cosmoxPlayer.addStatistic(GameVariables.WIN, 1);
 
         main.getAPI().getManager().setPhase(Phase.END);
 

@@ -22,7 +22,7 @@ public class TimePlayedTask extends BukkitRunnable {
         for(Player pls : Bukkit.getOnlinePlayers()){
             if(main.getAPI().getTeamUtils().isInTeam(pls,Team.NO_TEAM)){
                 CosmoxPlayer cosmoxPls = main.getAPI().getPlayer(pls);
-                cosmoxPls.setStatistic(GameVariables.TIME_PLAYED, 1);
+                cosmoxPls.addStatistic(GameVariables.TIME_PLAYED, 1);
             }
         }
 
