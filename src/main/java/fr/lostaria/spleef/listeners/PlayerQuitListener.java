@@ -22,7 +22,7 @@ public class PlayerQuitListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         if(!main.getAPI().getTeamUtils().isInTeam(player, Team.SPEC)){
-            main.getAPI().getPlayer(player).setTeam(Team.SPEC);
+            main.getGameManager().eliminePlayer(player);
 
             for(Player pls : Bukkit.getOnlinePlayers()){
                 pls.sendMessage(main.getPrefix() + Messages.BROADCAST_DEATH.formatted(player.getName()) + " §7§o(déconnexion)");

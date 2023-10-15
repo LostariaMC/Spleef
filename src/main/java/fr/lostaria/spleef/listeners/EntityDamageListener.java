@@ -42,7 +42,7 @@ public class EntityDamageListener implements Listener {
                 player.getInventory().clear();
                 player.getInventory().setArmorContents(null);
 
-                main.getAPI().getPlayer(player).setTeam(Team.SPEC);
+                main.getGameManager().eliminePlayer(player);
 
                 player.teleport(main.getGameManager().getMap().getLocation("spawn"));
 

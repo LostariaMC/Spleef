@@ -3,8 +3,8 @@ package fr.lostaria.spleef.game;
 import fr.lostaria.spleef.Spleef;
 import fr.lostaria.spleef.tasks.DamageTask;
 import fr.lostaria.spleef.tasks.DestructionLayersTask;
+import fr.lostaria.spleef.tasks.GameTimeTask;
 import fr.lostaria.spleef.tasks.IncrementPlayerSnowballTask;
-import fr.lostaria.spleef.tasks.TimePlayedTask;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.api.scoreboard.CosmoxScoreboard;
 import fr.worsewarn.cosmox.game.GameVariables;
@@ -142,8 +142,15 @@ public class GameManager {
         DamageTask damageTask = new DamageTask(main);
         damageTask.runTaskTimer(main, 10, 10);
 
-        TimePlayedTask timePlayedTask = new TimePlayedTask(main);
-        timePlayedTask.runTaskTimer(main, 20, 20);
+        GameTimeTask gameTimeTask = new GameTimeTask(main);
+        gameTimeTask.runTaskTimer(main, 20, 20);
+    }
+
+    public void eliminePlayer(Player player){
+        main.getAPI().getPlayer(player).setTeam(Team.SPEC);
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            main.getAPI().getPlayer(pls).getScoreboard().updateLine(1, "§7| " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + "Joueurs restants §f━ " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + getNbPlayersInGame());
+        }
     }
 
     public void checkWin(){
@@ -159,6 +166,16 @@ public class GameManager {
         if(players == 1){
             win(winner);
         }
+    }
+
+    public int getNbPlayersInGame(){
+        int players = 0;
+        for(Player pls : Bukkit.getOnlinePlayers()){
+            if(!main.getAPI().getTeamUtils().isInTeam(pls, Team.SPEC)){
+                players++;
+            }
+        }
+        return players;
     }
 
     public void win(Player player){
@@ -183,9 +200,11 @@ public class GameManager {
 
     public CosmoxScoreboard createScoreboard(Player player){
         CosmoxScoreboard scoreboard = new CosmoxScoreboard(player);
-
-        scoreboard.updateTitle("§f§lSPLEEF");
-
+        scoreboard.updateTitle("§f§lSPLEEF §7--:--");
+        scoreboard.updateLine(0, "§8");
+        scoreboard.updateLine(1, "§7| " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + "Joueurs restants §f━ " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + getNbPlayersInGame());
+        scoreboard.updateLine(2, "§d");
+        scoreboard.updateLine(3, "§a");
         return scoreboard;
     }
 

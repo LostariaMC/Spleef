@@ -26,6 +26,7 @@ public class PlayerJoinListener implements Listener {
                 public void run() {
                     main.getAPI().getPlayer(player).setTeam(Team.SPEC);
                     player.teleport(main.getGameManager().getMap().getLocation("spawn"));
+                    main.getAPI().getPlayer(player).setScoreboard(main.getGameManager().createScoreboard(player));
                 }
             }, 3);
         }
