@@ -22,6 +22,7 @@ public class GameListener implements Listener {
         main.getServer().getPluginManager().registerEvents(new InventoryClickListener(main), main);
         main.getServer().getPluginManager().registerEvents(new PlayerInteractListener(main), main);
         main.getServer().getPluginManager().registerEvents(new PlayerJoinListener(main), main);
+        main.getServer().getPluginManager().registerEvents(new PlayerQuitListener(main), main);
         main.getServer().getPluginManager().registerEvents(new PlayerSwapHandItemsListener(main), main);
         main.getServer().getPluginManager().registerEvents(new ProjectileHitListener(main), main);
         main.getServer().getPluginManager().registerEvents(new ProjectileLaunchListener(main), main);
