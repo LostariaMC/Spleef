@@ -53,7 +53,7 @@ public final class Spleef extends JavaPlugin {
         List<MapTemplate> mapsTemplate = new ArrayList<>();
         mapsTemplate.add(new MapTemplate(MapType.NONE, mapsLocation));
 
-        game = new Game("spleef", "Spleef", ChatColor.DARK_AQUA, Material.SNOWBALL, null, 2, false, true, statistics, achievements, Arrays.asList(" ","§7Survis le plus longtemps possible","§7en faisant tomber tes adversaires !","§7Le dernier sur la plateforme","§7remporte la partie !"), mapsTemplate);
+        game = new Game("spleef", "Spleef", ChatColor.DARK_AQUA, Material.SNOWBALL, null, 2, false, true, statistics, achievements, Arrays.asList(" ","§7Survie le plus longtemps possible","§7en faisant tomber tes adversaires !","§7Le dernier sur la plateforme","§7remporte la partie !"), mapsTemplate);
         game.setGameAuthor("Erpriex");
         game.setTags("Solo");
         game.setShowScoreTablist(true);
