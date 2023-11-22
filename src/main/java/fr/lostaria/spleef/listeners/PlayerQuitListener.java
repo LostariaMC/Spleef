@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.listeners;
 
 import fr.lostaria.spleef.Spleef;
+import fr.lostaria.spleef.game.SpleefPhase;
 import fr.worsewarn.cosmox.game.teams.Team;
 import fr.worsewarn.cosmox.tools.chat.Messages;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        if(!main.getAPI().getTeamUtils().isInTeam(player, Team.SPEC)){
+        if(!main.getAPI().getTeamUtils().isInTeam(player, Team.SPEC) && main.getGameManager().getPhase() == SpleefPhase.GAME){
             main.getGameManager().eliminePlayer(player);
 
             for(Player pls : Bukkit.getOnlinePlayers()){
