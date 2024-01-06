@@ -3,6 +3,7 @@ package fr.lostaria.spleef.listeners;
 import fr.lostaria.spleef.Spleef;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.game.teams.Team;
+import fr.worsewarn.cosmox.tools.chat.MessageBuilder;
 import fr.worsewarn.cosmox.tools.chat.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,15 +49,19 @@ public class EntityDamageListener implements Listener {
 
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_DEATH, 1f, 1f);
 
+                MessageBuilder titleDeathBroadcastTitle = new MessageBuilder(main.getPrefix() + Messages.BROADCAST_DEATH_LANG).formatted(player.getName());
                 for(Player pls : Bukkit.getOnlinePlayers()){
-                    pls.sendMessage(main.getPrefix() + Messages.BROADCAST_DEATH.formatted(player.getName()));
+                    titleDeathBroadcastTitle.sendMessage(pls);
                     pls.playSound(pls.getLocation(), Sound.ENTITY_VILLAGER_DEATH, 0.5f, 0.5f);
                 }
 
                 CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(player);
-                cosmoxPlayer.addMolecules(4, "§cLot de consolation");
+                MessageBuilder consolationPrizeMolecules = new MessageBuilder("§c@lang/spleef.molecules_death/");
+                cosmoxPlayer.addMolecules(4, consolationPrizeMolecules.toString(player));
 
-                player.sendTitle(ChatColor.RED + "§e☠ §cVous êtes mort §e☠", ChatColor.GRAY + "Vous êtes désormais spectateur", 20, 60, 20);
+                MessageBuilder titleDeathTitle = new MessageBuilder("@lang/spleef.title_death_title/");
+                MessageBuilder subtitleDeathTitle = new MessageBuilder("@lang/spleef.title_death_subtitle/");
+                player.sendTitle(ChatColor.RED + "§e☠ §c" + titleDeathTitle.toString(player) + " §e☠", ChatColor.GRAY + subtitleDeathTitle.toString(player), 20, 60, 20);
 
                 main.getGameManager().checkWin();
             }

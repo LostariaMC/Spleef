@@ -1,6 +1,7 @@
 package fr.lostaria.spleef.listeners;
 
 import fr.lostaria.spleef.Spleef;
+import fr.worsewarn.cosmox.tools.chat.MessageBuilder;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -21,7 +22,8 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         if(event.getItem() == null) return;
         if(event.getItem().getType() == Material.FIREWORK_STAR){
-            main.getAPI().getUtils().sendActionBar("§cAucune boule de neige en stock !", player);
+            MessageBuilder emptySnowballActionbar = new MessageBuilder("§c@lang/spleef.actionbar_snowball_empty/");
+            emptySnowballActionbar.sendActionbar(player);
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
         }
     }

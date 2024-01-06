@@ -5,6 +5,7 @@ import fr.lostaria.spleef.game.SpleefPhase;
 import fr.worsewarn.cosmox.api.players.CosmoxPlayer;
 import fr.worsewarn.cosmox.game.GameVariables;
 import fr.worsewarn.cosmox.game.teams.Team;
+import fr.worsewarn.cosmox.tools.chat.MessageBuilder;
 import fr.worsewarn.cosmox.tools.utils.BarAnimation;
 import fr.worsewarn.cosmox.tools.utils.Pair;
 import org.bukkit.*;
@@ -87,7 +88,8 @@ public class DestructionLayersTask extends BukkitRunnable {
 
     private void destroyCurrentLayer(){
         lockCheck = true;
-        main.getAPI().getUtils().broadcast(main.getPrefix() + "§fLa couche §e" + (currentLayer + 1) + "§f se détruit !");
+        MessageBuilder layerDestructionMessage = new MessageBuilder(main.getPrefix() + "§f@lang/spleef.message_layer_destruction/").formatted("§e" + (currentLayer + 1) + "§f");
+        layerDestructionMessage.broadcast();
 
         List<Location> blockLocations = main.getGameManager().getLayerLocations(currentLayer);
 
@@ -110,11 +112,17 @@ public class DestructionLayersTask extends BukkitRunnable {
                 if (blockLocations.isEmpty()) {
                     this.cancel();
 
+                    MessageBuilder layerDestructionInterjection1 = new MessageBuilder("@lang/spleef.interjection_layer_destruction_1/");
+                    MessageBuilder layerDestructionInterjection2 = new MessageBuilder("@lang/spleef.interjection_layer_destruction_2/");
+                    MessageBuilder layerDestructionInterjection3 = new MessageBuilder("@lang/spleef.interjection_layer_destruction_3/");
+
+                    MessageBuilder survivorMolecules = new MessageBuilder("§e@lang/spleef.molecules_survivor/");
                     for(Player pls : playersOnY){
                         CosmoxPlayer cosmoxPlayer = main.getAPI().getPlayer(pls);
-                        List<String> interjections = Arrays.asList("Pfiou, ça décoiffe..", "Wow, ça a fait vibrer mes chaussettes..", "Wow, c'était l'essorage ou quoi !");
+                        List<String> interjections = Arrays.asList(layerDestructionInterjection1.toString(pls), layerDestructionInterjection2.toString(pls), layerDestructionInterjection3.toString(pls));
                         pls.sendMessage("§7§o" + interjections.get(new Random().nextInt(interjections.size())));
-                        cosmoxPlayer.addMolecules(3, "§eSurvivant");
+
+                        cosmoxPlayer.addMolecules(3, survivorMolecules.toString(pls));
                         cosmoxPlayer.addStatistic("lastSurvivor", 1);
                     }
                     playersOnY.clear();

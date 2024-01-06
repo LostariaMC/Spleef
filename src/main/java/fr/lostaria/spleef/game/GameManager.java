@@ -11,6 +11,7 @@ import fr.worsewarn.cosmox.game.GameVariables;
 import fr.worsewarn.cosmox.game.Phase;
 import fr.worsewarn.cosmox.game.events.GameStartEvent;
 import fr.worsewarn.cosmox.game.teams.Team;
+import fr.worsewarn.cosmox.tools.chat.MessageBuilder;
 import fr.worsewarn.cosmox.tools.chat.Messages;
 import fr.worsewarn.cosmox.tools.map.GameMap;
 import fr.worsewarn.cosmox.tools.utils.Pair;
@@ -124,7 +125,8 @@ public class GameManager {
 
                 updatePlayerSnowballsInventory(pls);
 
-                pls.sendMessage(main.getPrefix() + "§fEt c'est parti, à vos pelles !");
+                MessageBuilder preparationEndMessage = new MessageBuilder(main.getPrefix() + "§f@lang/spleef.message_preparation_end/");
+                preparationEndMessage.sendMessage(pls);
                 pls.playSound(pls.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1f, 1f);
             }
         }
@@ -148,8 +150,9 @@ public class GameManager {
 
     public void eliminePlayer(Player player){
         main.getAPI().getPlayer(player).setTeam(Team.SPEC);
+        MessageBuilder remainingPlayersSb = new MessageBuilder("@lang/spleef.scoreboard_remaining_players/");
         for(Player pls : Bukkit.getOnlinePlayers()){
-            main.getAPI().getPlayer(pls).getScoreboard().updateLine(1, "§7| " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + "Joueurs restants §f━ " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + getNbPlayersInGame());
+            main.getAPI().getPlayer(pls).getScoreboard().updateLine(1, "§7| " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + remainingPlayersSb.toString(pls) + " §f━ " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + getNbPlayersInGame());
         }
     }
 
@@ -202,7 +205,8 @@ public class GameManager {
         CosmoxScoreboard scoreboard = new CosmoxScoreboard(player);
         scoreboard.updateTitle("§f§lSPLEEF §7--:--");
         scoreboard.updateLine(0, "§8");
-        scoreboard.updateLine(1, "§7| " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + "Joueurs restants §f━ " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + getNbPlayersInGame());
+        MessageBuilder remainingPlayersSb = new MessageBuilder("@lang/spleef.scoreboard_remaining_players/");
+        scoreboard.updateLine(1, "§7| " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + remainingPlayersSb.toString(player) + " §f━ " + net.md_5.bungee.api.ChatColor.of("#E8AA14") + getNbPlayersInGame());
         scoreboard.updateLine(2, "§d");
         scoreboard.updateLine(3, "§a");
         return scoreboard;
