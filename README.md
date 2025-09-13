@@ -6,7 +6,7 @@ This project requires the following to get started:
 - Java version `17` or higher
 - Maven version `3.9.11` or higher
 - Waterfall server version `1.21.1`
-- Lostaria enviroment with Cosmox API plugin
+- Lostaria environment with Cosmox API plugin
 
 ## Getting Started
 
